@@ -17,9 +17,9 @@ OrdererOrgs:
       - Hostname: orderer0 # orderer 改为 orderer0,1,2
       - Hostname: orderer1
       - Hostname: orderer2
-      SANS: # 重要
+        SANS: # 重要
         - "*"
-        - "192.168."
+        - "192.168.5.128" # 主机ip
 
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
@@ -30,7 +30,7 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   - Name: Org1
     Domain: org1.example.com
-    EnableNodeOUs: false
+    EnableNodeOUs: true # 改为 true
 
     # ---------------------------------------------------------------------------
     # "CA"
@@ -95,7 +95,10 @@ PeerOrgs:
     # name collisions
     # ---------------------------------------------------------------------------
     Template:
-      Count: 1
+      Count: 2 # 两个peer节点
+      SANS:
+        - "*"
+        - "192.168.5.128"
       # Start: 5
       # Hostname: {{.Prefix}}{{.Index}} # default
       # SANS:
@@ -114,8 +117,13 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   - Name: Org2
     Domain: org2.example.com
-    EnableNodeOUs: false
+    EnableNodeOUs: true
     Template:
-      Count: 1
+      Count: 2
+      SANS:
+        - "*"
+        - "192.168.5.128"
     Users:
       Count: 1
+# 修改完后执行
+# cryptogen generate --config=./crypto-config.yaml --output ./crypto-config
