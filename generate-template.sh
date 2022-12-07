@@ -1,1 +1,1 @@
-./cryptogen showtemplate > ../crypto-config.yaml
+cryptogen showtemplate > ./config/crypto-config.yaml
