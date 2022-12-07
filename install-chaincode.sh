@@ -9,10 +9,12 @@ mv target/chaincode.jar $PWD
 # 打包链码
 cd /etc/hyperledger/fabric/chaincodes/
 
-peer lifecycle chaincode package hyperledger-fabric-contract-java-demo.tar.gz \
---path ./hyperledger-fabric-contract-java-demo/ \
+export CCNANE=hyperledger-fabric-contract-java-demo
+
+peer lifecycle chaincode package ${CCNAME}.tar.gz \
+--path ./${CCNAME}/ \
 --lang java \
---label hyperledger-fabric-contract-java-demo_1
+--label ${CCNAME}_1
 
 # 在peer节点上安装链码
 # peer0.org1
@@ -22,10 +24,10 @@ export CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto-config/peerOrg
 export CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
 export CORE_PEER_ADDRESS=peer0.org1.example.com:7051
 
-peer lifecycle chaincode install hyperledger-fabric-contract-java-demo.tar.gz
+peer lifecycle chaincode install ${CCNAME}.tar.gz
 # 结果
-# [020 12-07 11:13:12.57 UTC] [cli.lifecycle.chaincode] submitInstallProposal -> INFO Installed remotely: response:<status:200 payload:"\nhhyperledger-fabric-contract-java-demo_1:2ef462a461383ad50ec03592a457f1d052b83827bc3ea128b329407ae6e8641b\022'hyperledger-fabric-contract-java-demo_1" > 
-# [021 12-07 11:13:12.57 UTC] [cli.lifecycle.chaincode] submitInstallProposal -> INFO Chaincode code package identifier: hyperledger-fabric-contract-java-demo_1:2ef462a461383ad50ec03592a457f1d052b83827bc3ea128b329407ae6e8641b
+# [020 12-07 11:13:12.57 UTC] [cli.lifecycle.chaincode] submitInstallProposal -> INFO Installed remotely: response:<status:200 payload:"\nh${CCNAME}_1:2ef462a461383ad50ec03592a457f1d052b83827bc3ea128b329407ae6e8641b\022'${CCNAME}_1" > 
+# [021 12-07 11:13:12.57 UTC] [cli.lifecycle.chaincode] submitInstallProposal -> INFO Chaincode code package identifier: ${CCNAME}_1:2ef462a461383ad50ec03592a457f1d052b83827bc3ea128b329407ae6e8641b
 # 2ef462a461383ad50ec03592a457f1d052b83827bc3ea128b329407ae6e8641b
 
 # peer1.org1
@@ -35,7 +37,7 @@ export CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto-config/peerOrg
 export CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
 export CORE_PEER_ADDRESS=peer1.org1.example.com:8051
 
-peer lifecycle chaincode install hyperledger-fabric-contract-java-demo.tar.gz
+peer lifecycle chaincode install ${CCNAME}.tar.gz
 
 # peer0.org2
 export CORE_PEER_TLS_ENABLED=true
@@ -44,7 +46,7 @@ export CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto-config/peerOrg
 export CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
 export CORE_PEER_ADDRESS=peer0.org2.example.com:9051
 
-peer lifecycle chaincode install hyperledger-fabric-contract-java-demo.tar.gz
+peer lifecycle chaincode install ${CCNAME}.tar.gz
 
 # peer1.org2
 export CORE_PEER_TLS_ENABLED=true
@@ -53,16 +55,16 @@ export CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/crypto-config/peerOrg
 export CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/fabric/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
 export CORE_PEER_ADDRESS=peer1.org2.example.com:10051
 
-peer lifecycle chaincode install hyperledger-fabric-contract-java-demo.tar.gz
+peer lifecycle chaincode install ${CCNAME}.tar.gz
 
 # 查询链码包 peer1.org2
 peer lifecycle chaincode queryinstalled
 # 结果
 # Installed chaincodes on peer:
-# Package ID: hyperledger-fabric-contract-java-demo_1:2ef462a461383ad50ec03592a457f1d052b83827bc3ea128b329407ae6e8641b, Label: hyperledger-fabric-contract-java-demo_1
+# Package ID: ${CCNAME}_1:2ef462a461383ad50ec03592a457f1d052b83827bc3ea128b329407ae6e8641b, Label: ${CCNAME}_1
 
 # 将包ID导出为环境变量
-export CC_PACKAGE_ID=hyperledger-fabric-contract-java-demo_1:2ef462a461383ad50ec03592a457f1d052b83827bc3ea128b329407ae6e8641b
+export CC_PACKAGE_ID=${CCNAME}_1:2ef462a461383ad50ec03592a457f1d052b83827bc3ea128b329407ae6e8641b
 
 # 批准链码定义
 
@@ -77,7 +79,7 @@ export CORE_PEER_ADDRESS=peer0.org1.example.com:7051
 peer lifecycle chaincode approveformyorg -o orderer0.example.com:7050 \
 --ordererTLSHostnameOverride orderer0.example.com \
 --channelID $APP_CHANNEL \
---name hyperledger-fabric-contract-java-demo \
+--name ${CCNAME} \
 --version 1.0 \
 --package-id $CC_PACKAGE_ID \
 --sequence 1 \
@@ -86,7 +88,7 @@ peer lifecycle chaincode approveformyorg -o orderer0.example.com:7050 \
 # 检查通道成员是否已批准相同链码
 peer lifecycle chaincode checkcommitreadiness \
 --channelID $APP_CHANNEL \
---name hyperledger-fabric-contract-java-demo \
+--name ${CCNAME} \
 --version 1.0 \
 --sequence 1 \
 --tls --cafile /etc/hyperledger/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
@@ -102,7 +104,7 @@ export CORE_PEER_ADDRESS=peer0.org2.example.com:9051
 peer lifecycle chaincode approveformyorg -o orderer0.example.com:7050 \
 --ordererTLSHostnameOverride orderer0.example.com \
 --channelID $APP_CHANNEL \
---name hyperledger-fabric-contract-java-demo \
+--name ${CCNAME} \
 --version 1.0 \
 --package-id $CC_PACKAGE_ID \
 --sequence 1 \
@@ -111,7 +113,7 @@ peer lifecycle chaincode approveformyorg -o orderer0.example.com:7050 \
 # 再次检查
 peer lifecycle chaincode checkcommitreadiness \
 --channelID $APP_CHANNEL \
---name hyperledger-fabric-contract-java-demo \
+--name ${CCNAME} \
 --version 1.0 \
 --sequence 1 \
 --tls --cafile /etc/hyperledger/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
@@ -121,7 +123,7 @@ peer lifecycle chaincode checkcommitreadiness \
 peer lifecycle chaincode commit -o orderer0.example.com:7050 \
 --ordererTLSHostnameOverride orderer0.example.com \
 --channelID $APP_CHANNEL \
---name hyperledger-fabric-contract-java-demo \
+--name ${CCNAME} \
 --version 1.0 \
 --sequence 1 \
 --tls --cafile /etc/hyperledger/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
@@ -132,7 +134,7 @@ peer lifecycle chaincode commit -o orderer0.example.com:7050 \
 
 # 确认链码已提交到通道
 peer lifecycle chaincode querycommitted --channelID $APP_CHANNEL \
---name hyperledger-fabric-contract-java-demo \
+--name ${CCNAME} \
 --cafile /etc/hyperledger/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 
 # 调用链码
@@ -142,7 +144,7 @@ peer chaincode invoke -o orderer0.example.com:7050 \
 --ordererTLSHostnameOverride orderer0.example.com \
 --tls --cafile /etc/hyperledger/fabric/crypto-config/ordererOrganizations/example.com/orderers/orderer0.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
 -C $APP_CHANNEL \
--n hyperledger-fabric-contract-java-demo \
+-n ${CCNAME} \
 --peerAddresses peer0.org1.example.com:7051 \
 --tlsRootCertFiles /etc/hyperledger/fabric/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt \
 --peerAddresses peer0.org2.example.com:9051 \
@@ -152,5 +154,5 @@ peer chaincode invoke -o orderer0.example.com:7050 \
 # queryCat
 peer chaincode query \
 -C $APP_CHANNEL \
--n hyperledger-fabric-contract-java-demo \
+-n ${CCNAME} \
 -c '{"Args":["queryCat" , "cat-0"]}'
