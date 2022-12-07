@@ -18,8 +18,8 @@ OrdererOrgs:
       - Hostname: orderer1
       - Hostname: orderer2
         SANS: # 重要
-        - "*"
-        - "192.168.5.128" # 主机ip
+          - "*"
+          - "192.168.5.128" # 主机ip
 
 # ---------------------------------------------------------------------------
 # "PeerOrgs" - Definition of organizations managing peer nodes
@@ -117,7 +117,7 @@ PeerOrgs:
   # ---------------------------------------------------------------------------
   - Name: Org2
     Domain: org2.example.com
-    EnableNodeOUs: true
+    EnableNodeOUs: false
     Template:
       Count: 2
       SANS:

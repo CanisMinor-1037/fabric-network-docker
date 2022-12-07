@@ -5,7 +5,7 @@ version: '2.0'
 services:
 
     cli:
-        image: hyperledger/fabric-tools:2.4.7
+        image: hyperledger/fabric-tools:2.4.1
         restart: always
         container_name: fabric-cli
         hostname: fabric-cli
@@ -40,7 +40,7 @@ services:
         command: bash -c 'cd /tmp; source scripts/func.sh; while true; do sleep 20170504; done'
 
     orderer0.example.com:  # There can be multiple orderers
-        image: hyperledger/fabric-orderer:2.4.7
+        image: hyperledger/fabric-orderer:2.4.1
         restart: always
         container_name: orderer0.example.com
         hostname: orderer0.example.com
@@ -87,7 +87,7 @@ services:
         command: orderer start
 
     orderer1.example.com:
-        image: hyperledger/fabric-orderer:2.4.7
+        image: hyperledger/fabric-orderer:2.4.1
         restart: always
         container_name: orderer1.example.com
         hostname: orderer1.example.com
@@ -132,7 +132,7 @@ services:
         command: orderer start    
 
     orderer2.example.com:
-        image: hyperledger/fabric-orderer:2.4.7
+        image: hyperledger/fabric-orderer:2.4.1
         restart: always
         container_name: orderer2.example.com
         hostname: orderer2.example.com

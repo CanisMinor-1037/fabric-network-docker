@@ -5,7 +5,7 @@ version: '2.0'
 services:
 
     peer0.org2.example.com:
-        image: hyperledger/fabric-peer:2.4.7
+        image: hyperledger/fabric-peer:2.4.1
         restart: always
         container_name: peer0.org2.example.com
         hostname: peer0.org2.example.com
@@ -35,16 +35,17 @@ services:
             - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
             - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
             - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
-            - CORE_CHAINCODE_BUILDER=hyperledger/fabric-ccenv:2.4.7
-            - CORE_CHAINCODE_GOLANG_RUNTIME=hyperledger/fabric-baseos:2.4.7
-            - CORE_CHAINCODE_JAVA_RUNTIME=hyperledger/fabric-javaenv:2.4.7
-            - CORE_CHAINCODE_NODE_RUNTIME=hyperledger/fabric-nodeenv:2.4.7
+            - CORE_CHAINCODE_BUILDER=hyperledger/fabric-ccenv:2.4.1
+            - CORE_CHAINCODE_GOLANG_RUNTIME=hyperledger/fabric-baseos:2.4.1
+            - CORE_CHAINCODE_JAVA_RUNTIME=hyperledger/fabric-javaenv:2.4.1
+            - CORE_CHAINCODE_NODE_RUNTIME=hyperledger/fabric-nodeenv:2.4.1
             - CORE_PEER_ID=peer0.org2.example.com
             - CORE_PEER_ADDRESS=peer0.org2.example.com:9051
             - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+            - CORE_PEER_CHAINCODEADDRESS=peer0.org2.example.com:9052
             - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.example.com:9051
             - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.example.com:9051
-            - CORE_PEER_LOCALMSPID=org2MSP
+            - CORE_PEER_LOCALMSPID=Org2MSP
             - FABRIC_LOGGING_SPEC=DEBUG # info:core.chaincode=debug
             - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
             - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer0.org2.couchdb:5984
@@ -60,10 +61,13 @@ services:
         #command: bash -c 'bash /tmp/peer_build.sh; peer node start'
         command: peer node start
         depends_on:
+            # - orderer0.example.com
+            # - orderer1.example.com
+            # - orderer2.example.com
             - peer0.org2.couchdb
 
     peer1.org2.example.com:
-        image: hyperledger/fabric-peer:2.4.7
+        image: hyperledger/fabric-peer:2.4.1
         restart: always
         container_name: peer1.org2.example.com
         hostname: peer1.org2.example.com
@@ -93,16 +97,17 @@ services:
             - CORE_PEER_TLS_CERT_FILE=/etc/hyperledger/fabric/tls/server.crt
             - CORE_PEER_TLS_KEY_FILE=/etc/hyperledger/fabric/tls/server.key
             - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
-            - CORE_CHAINCODE_BUILDER=hyperledger/fabric-ccenv:2.4.7
-            - CORE_CHAINCODE_GOLANG_RUNTIME=hyperledger/fabric-baseos:2.4.7
-            - CORE_CHAINCODE_JAVA_RUNTIME=hyperledger/fabric-javaenv:2.4.7
-            - CORE_CHAINCODE_NODE_RUNTIME=hyperledger/fabric-nodeenv:2.4.7
+            - CORE_CHAINCODE_BUILDER=hyperledger/fabric-ccenv:2.4.1
+            - CORE_CHAINCODE_GOLANG_RUNTIME=hyperledger/fabric-baseos:2.4.1
+            - CORE_CHAINCODE_JAVA_RUNTIME=hyperledger/fabric-javaenv:2.4.1
+            - CORE_CHAINCODE_NODE_RUNTIME=hyperledger/fabric-nodeenv:2.4.1
             - CORE_PEER_ID=peer1.org2.example.com
             - CORE_PEER_ADDRESS=peer1.org2.example.com:10051
             - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
+            - CORE_PEER_CHAINCODEADDRESS=peer1.org2.example.com:10052
             - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.org2.example.com:10051
             - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.org2.example.com:10051
-            - CORE_PEER_LOCALMSPID=org2MSP
+            - CORE_PEER_LOCALMSPID=Org2MSP
             - FABRIC_LOGGING_SPEC=DEBUG # info:core.chaincode=debug
             - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
             - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=peer1.org2.couchdb:5984
@@ -118,6 +123,9 @@ services:
         #command: bash -c 'bash /tmp/peer_build.sh; peer node start'
         command: peer node start
         depends_on:
+            # - orderer0.example.com
+            # - orderer1.example.com
+            # - orderer2.example.com
             - peer1.org2.couchdb
     
     peer0.org2.couchdb:
