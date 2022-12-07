@@ -9,7 +9,7 @@ mv target/chaincode.jar $PWD
 # 打包链码
 cd /etc/hyperledger/fabric/chaincodes/
 
-export CCNANE=hyperledger-fabric-contract-java-demo
+export CCNAME=hyperledger-fabric-contract-java-demo
 
 peer lifecycle chaincode package ${CCNAME}.tar.gz \
 --path ./${CCNAME}/ \
