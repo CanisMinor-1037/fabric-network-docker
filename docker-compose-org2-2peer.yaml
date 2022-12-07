@@ -119,6 +119,7 @@ services:
             - ./crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/etc/hyperledger/fabric/tls
         expose:
             - "10051"  # gRPC
+            - "10052" # chaincode
             - "9446"  # Operation REST
         #command: bash -c 'bash /tmp/peer_build.sh; peer node start'
         command: peer node start
